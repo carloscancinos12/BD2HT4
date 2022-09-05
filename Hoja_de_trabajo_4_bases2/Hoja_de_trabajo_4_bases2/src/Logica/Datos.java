@@ -37,12 +37,14 @@ public class Datos {
             res = PS.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Registro Guardado..........");
+                //CN.commit();
             }
         } catch (HeadlessException | SQLException e) {
             System.err.println("Error al guardar los datos en la base de datos: " + e.getMessage());
+            //CN.rollback();
         } finally {
             PS = null;
-            CN.close();
+            //CN.close();
         }
 
         return res;
@@ -66,7 +68,7 @@ public class Datos {
         } finally {
             PS=null;
             RS= null;
-            CN.close();
+            //CN.close();
         }
         return DT;
     }
@@ -98,8 +100,38 @@ public class Datos {
         } finally {
             PS=null;
             RS= null;
-            CN.close();
+            //CN.close();
         }
         return DT;
+    }
+      
+    public ResultSet Commit() {
+        try {
+            PS= CN.getConnection().prepareStatement("commit;");
+            RS = PS.executeQuery();
+            CN.commit();
+        } catch (SQLException e) {
+           System.out.println("Error al listar los datos..." +e.getMessage()); 
+        } finally {
+            PS=null;
+            RS= null;
+            CN.close();
+        }
+        return RS;
+    }
+    
+    public ResultSet Rollback() {
+        try {
+            PS= CN.getConnection().prepareStatement("rollback;");
+            RS = PS.executeQuery();
+            CN.rollback();
+        } catch (SQLException e) {
+           System.out.println("Error al listar los datos..." +e.getMessage()); 
+        } finally {
+            PS=null;
+            RS= null;
+            CN.close();
+        }
+        return RS;
     }
 }
