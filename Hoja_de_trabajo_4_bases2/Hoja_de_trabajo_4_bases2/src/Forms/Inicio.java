@@ -120,31 +120,27 @@ public class Inicio extends javax.swing.JFrame {
 
     private void NoComprometidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoComprometidaActionPerformed
         // TODO add your handling code here:
-        CP.NivelTran(1);
-        new Transaccion1().setVisible(true);
-        new Transaccion2().setVisible(true);
+        new Transaccion1(1).setVisible(true);
+        new Transaccion2(1).setVisible(true);
         dispose();
     }//GEN-LAST:event_NoComprometidaActionPerformed
 
     private void ComprometidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComprometidaActionPerformed
         // TODO add your handling code here:
-        CP.NivelTran(2);
-        new Transaccion1().setVisible(true);
-        new Transaccion2().setVisible(true);
+        new Transaccion1(2).setVisible(true);
+        new Transaccion2(2).setVisible(true);
         dispose();
     }//GEN-LAST:event_ComprometidaActionPerformed
 
     private void SerializableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SerializableActionPerformed
-        CP.NivelTran(4);
-        new Transaccion1().setVisible(true);
-        new Transaccion2().setVisible(true);
+        new Transaccion1(4).setVisible(true);
+        new Transaccion2(4).setVisible(true);
         dispose();
     }//GEN-LAST:event_SerializableActionPerformed
 
     private void RepetibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RepetibleActionPerformed
-        CP.NivelTran(3);
-        new Transaccion1().setVisible(true);
-        new Transaccion2().setVisible(true);
+        new Transaccion1(3).setVisible(true);
+        new Transaccion2(3).setVisible(true);
         dispose();
     }//GEN-LAST:event_RepetibleActionPerformed
 

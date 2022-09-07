@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableModel;
 public class Datos {
     private final String SQL_INSERT = "INSERT INTO hoja4_bases2.Datos(Nombre,Nacionalidad,Telefono)" + "VALUES(?,?,?)";
     private final String SQL_SELECT = "SELECT * FROM hoja4_bases2.Datos";
+    private final String SQL_UPDATE = "UPDATE hoja4_bases2.Datos SET Nombre = ?, Nacionalidad = ?,Telefono = ? WHERE id = ?";
+    private final String SQL_SEARCH = "SELECT * FROM hoja4_bases2.Datos WHERE 0 = 0 ";
     private PreparedStatement PS;
     private DefaultTableModel DT;
     private ResultSet RS;
@@ -52,6 +54,31 @@ public class Datos {
 
         return res;
     }
+    
+    public int ActualizarDatos(String nombre, String nacionalidad, int telefono, int id) throws Exception {
+        int res = 0;
+        try {
+            PS = conect.prepareStatement(SQL_UPDATE);
+            PS.setString(1, nombre);
+            PS.setString(2, nacionalidad);
+            PS.setInt(3, telefono);
+            PS.setInt(4, id);
+            res = PS.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "Registro Modificado..........");
+                //CN.commit();
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.err.println("Error al modificar los datos en la base de datos: " + e.getMessage());
+            //CN.rollback();
+        } finally {
+            PS = null;
+            //CN.close();
+        }
+
+        return res;
+    }
+     
      public DefaultTableModel getDatos() {
         try {
             setTitulos();
@@ -113,6 +140,7 @@ public class Datos {
             PS= conect.prepareStatement("commit;");
             PS.execute();
             //CN.commit();
+            JOptionPane.showMessageDialog(null, "Transaccion confirmada");
         } catch (SQLException e) {
            System.out.println("Error al listar los datos..." +e.getMessage()); 
         } finally {
@@ -128,6 +156,7 @@ public class Datos {
             PS= conect.prepareStatement("rollback;");
             PS.execute();
             //CN.rollback();
+            JOptionPane.showMessageDialog(null, "Transaccion abortada");
         } catch (SQLException e) {
            System.out.println("Error al listar los datos..." +e.getMessage()); 
         } finally {
@@ -155,7 +184,8 @@ public class Datos {
     
     public void NivelTran(int nivel)
     {
-        String tran = "REPEATABLE READ";
+        String tran = "";
+        System.out.printf(tran + "1\n");
         if (nivel == 1)
             {
                 tran = "READ UNCOMMITTED";
@@ -164,6 +194,11 @@ public class Datos {
             {
                 tran = "READ COMMITTED";
             }
+            else if (nivel == 3)
+            {
+                tran = "REPEATABLE READ";
+                System.out.printf(tran + "2\n");
+            }
             else if (nivel == 4)
             {
                 tran = "SERIALIZABLE";
@@ -171,13 +206,51 @@ public class Datos {
         try {
             PS = conect.prepareStatement("SET SESSION TRANSACTION ISOLATION LEVEL " + tran + ";");
             RS = PS.executeQuery();
+            System.out.printf(tran + "3\n");
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "pONTE VERGA");
+            JOptionPane.showMessageDialog(null, "No se ha podido actualizar el nivel de transaccion");
         } finally
         {
             PS=null;
             RS= null;
             //CN.close();
         }
+    }
+    
+      public DefaultTableModel BuscarDatos(String nombre, String nacionalidad, String telefono) {
+        String SQL = SQL_SEARCH;
+        if(nombre.length() > 0)
+        {
+            SQL = SQL + " AND Nombre = " + nombre;
+        }
+        if(nacionalidad.length() > 0)
+        {
+            SQL = SQL + " AND Nacionalidad = " + nacionalidad;
+        }
+        if(telefono.length() > 0)
+        {
+            SQL = SQL + " AND Telefono = " + telefono;
+        }
+        try {
+            setTitulos();
+            PS= conect.prepareStatement(SQL);
+            RS = PS.executeQuery();
+            Object[] fila = new Object[4];
+            while(RS.next())
+            {
+                fila[0]=RS.getInt(1);
+                fila[1]=RS.getString(2);
+                fila[2]=RS.getString(3);
+                fila[3]=RS.getInt(4);
+                DT.addRow(fila);
+            }
+        } catch (SQLException e) {
+           System.out.println("Error al listar los datos..." +e.getMessage()); 
+        } finally {
+            PS=null;
+            RS= null;
+            //CN.close();
+        }
+        return DT;
     }
 }

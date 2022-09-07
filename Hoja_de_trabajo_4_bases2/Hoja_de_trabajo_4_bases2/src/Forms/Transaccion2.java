@@ -8,16 +8,24 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 public class Transaccion2 extends javax.swing.JFrame {
 
     /**
      * Creates new form Transaccion1
      */
-    public Transaccion2() {
+    public Transaccion2(int nivel) {
         initComponents();
         CP = new Datos();
         Listar();
         this.setLocationRelativeTo(null);
+        Editar.setEnabled(false);
+        Insertar.setEnabled(false);
+        Commit.setEnabled(false);
+        Rollback.setEnabled(false);
+        IniciarTran.setEnabled(true);
+        CP.NivelTran(nivel);
+        this.setLocation(975,100);
     }
      private final Datos CP;
     int num = 0;
@@ -25,6 +33,13 @@ public class Transaccion2 extends javax.swing.JFrame {
 
     private void Listar() {
         jDatos.setModel(CP.getDatos());
+    }
+    
+    private void Relistar() {
+        String nombre = txtNombre.getText();
+        String nacionalidad = txtNacionalidad.getText();
+        String telefono = txtTelefono.getText();
+        jDatos.setModel(CP.BuscarDatos(nombre, nacionalidad, telefono));
     }
 
     private void Limpiar() {
@@ -54,14 +69,15 @@ public class Transaccion2 extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         txtNacionalidad = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
-        boton1 = new javax.swing.JButton();
-        boton2 = new javax.swing.JButton();
-        commit = new javax.swing.JButton();
+        Regresar = new javax.swing.JButton();
+        Insertar = new javax.swing.JButton();
+        Commit = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
-        rollback = new javax.swing.JButton();
+        Rollback = new javax.swing.JButton();
         IniciarTran = new javax.swing.JButton();
         Editar = new javax.swing.JButton();
+        Actualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,27 +130,27 @@ public class Transaccion2 extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jDatos);
 
-        boton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        boton1.setText("REGRESAR");
-        boton1.addActionListener(new java.awt.event.ActionListener() {
+        Regresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Regresar.setText("REGRESAR");
+        Regresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boton1ActionPerformed(evt);
+                RegresarActionPerformed(evt);
             }
         });
 
-        boton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        boton2.setText("INSERTAR");
-        boton2.addActionListener(new java.awt.event.ActionListener() {
+        Insertar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Insertar.setText("INSERTAR");
+        Insertar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boton2ActionPerformed(evt);
+                InsertarActionPerformed(evt);
             }
         });
 
-        commit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        commit.setText("COMMIT");
-        commit.addActionListener(new java.awt.event.ActionListener() {
+        Commit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Commit.setText("COMMIT");
+        Commit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                commitActionPerformed(evt);
+                CommitActionPerformed(evt);
             }
         });
 
@@ -143,11 +159,11 @@ public class Transaccion2 extends javax.swing.JFrame {
 
         txtID.setEditable(false);
 
-        rollback.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        rollback.setText("ROLLBACK");
-        rollback.addActionListener(new java.awt.event.ActionListener() {
+        Rollback.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Rollback.setText("ROLLBACK");
+        Rollback.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rollbackActionPerformed(evt);
+                RollbackActionPerformed(evt);
             }
         });
 
@@ -167,15 +183,23 @@ public class Transaccion2 extends javax.swing.JFrame {
             }
         });
 
+        Actualizar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Actualizar.setText("ACTUALIZAR");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,17 +220,20 @@ public class Transaccion2 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(boton1)
+                        .addContainerGap()
+                        .addComponent(Regresar)
                         .addGap(18, 18, 18)
-                        .addComponent(boton2)
+                        .addComponent(Insertar)
                         .addGap(18, 18, 18)
                         .addComponent(Editar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Actualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(IniciarTran)
                         .addGap(18, 18, 18)
-                        .addComponent(commit)
+                        .addComponent(Commit)
                         .addGap(18, 18, 18)
-                        .addComponent(rollback)))
+                        .addComponent(Rollback)))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -235,27 +262,28 @@ public class Transaccion2 extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(boton1)
-                        .addComponent(boton2)
+                        .addComponent(Regresar)
+                        .addComponent(Insertar)
                         .addComponent(Editar))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rollback)
-                        .addComponent(commit)
-                        .addComponent(IniciarTran)))
+                        .addComponent(Rollback)
+                        .addComponent(Commit)
+                        .addComponent(IniciarTran)
+                        .addComponent(Actualizar)))
                 .addGap(0, 32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void boton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton1ActionPerformed
+    private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
         // TODO add your handling code here:
         new Inicio().setVisible(true);
         dispose();
         
-    }//GEN-LAST:event_boton1ActionPerformed
+    }//GEN-LAST:event_RegresarActionPerformed
 
-    private void boton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton2ActionPerformed
+    private void InsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertarActionPerformed
         // TODO add your handling code here:
         String nombre = txtNombre.getText();
         String nacionalidad = txtNacionalidad.getText();
@@ -267,7 +295,7 @@ public class Transaccion2 extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_boton2ActionPerformed
+    }//GEN-LAST:event_InsertarActionPerformed
 
     private void jDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDatosMouseClicked
         // TODO add your handling code here:
@@ -279,33 +307,69 @@ public class Transaccion2 extends javax.swing.JFrame {
         num = 1;
     }//GEN-LAST:event_jDatosMouseClicked
 
-    private void commitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitActionPerformed
+    private void CommitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CommitActionPerformed
         try {
+            Editar.setEnabled(false);
+            Insertar.setEnabled(false);
+            Commit.setEnabled(false);
+            Rollback.setEnabled(false);
+            IniciarTran.setEnabled(true);
             ResultSet respuesta = CP.Commit();
             Listar();
             Limpiar();
         } catch (Exception ex) {
             Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_commitActionPerformed
+    }//GEN-LAST:event_CommitActionPerformed
 
-    private void rollbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollbackActionPerformed
+    private void RollbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RollbackActionPerformed
         try {
+            Editar.setEnabled(false);
+            Insertar.setEnabled(false);
+            Commit.setEnabled(false);
+            Rollback.setEnabled(false);
+            IniciarTran.setEnabled(true);
             ResultSet respuesta = CP.Rollback();
             Listar();
             Limpiar();
         } catch (Exception ex) {
             Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_rollbackActionPerformed
+    }//GEN-LAST:event_RollbackActionPerformed
 
     private void IniciarTranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarTranActionPerformed
-        // TODO add your handling code here:
+        try {
+            Editar.setEnabled(true);
+            Insertar.setEnabled(true);
+            Commit.setEnabled(true);
+            Rollback.setEnabled(true);
+            IniciarTran.setEnabled(false);
+            CP.Transaccion();
+            Listar();
+            Limpiar();
+        } catch (Exception ex) {
+            Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_IniciarTranActionPerformed
 
     private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
-        // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String nacionalidad = txtNacionalidad.getText();
+        int telefono = Integer.parseInt(txtTelefono.getText());
+        int id = Integer.parseInt(txtID.getText());
+        try {
+            int respuesta = CP.ActualizarDatos(nombre, nacionalidad, telefono, id);
+            Listar();
+            Limpiar();
+        } catch (Exception ex) {
+            Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_EditarActionPerformed
+
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
+        Relistar();
+        Limpiar();
+    }//GEN-LAST:event_ActualizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -338,17 +402,19 @@ public class Transaccion2 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Transaccion2().setVisible(true);
+                new Transaccion2(3).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Actualizar;
+    private javax.swing.JButton Commit;
     private javax.swing.JButton Editar;
     private javax.swing.JButton IniciarTran;
-    private javax.swing.JButton boton1;
-    private javax.swing.JButton boton2;
-    private javax.swing.JButton commit;
+    private javax.swing.JButton Insertar;
+    private javax.swing.JButton Regresar;
+    private javax.swing.JButton Rollback;
     private javax.swing.JTable jDatos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -357,7 +423,6 @@ public class Transaccion2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton rollback;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNacionalidad;
     private javax.swing.JTextField txtNombre;
