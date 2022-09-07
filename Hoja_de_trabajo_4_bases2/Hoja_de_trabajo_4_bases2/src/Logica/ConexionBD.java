@@ -22,9 +22,6 @@ public class ConexionBD {
         try{
             Class.forName(driver);
             con= (Connection) DriverManager.getConnection(url, user, pass);
-            con.setAutoCommit(false);
-            PreparedStatement ps = con.prepareStatement("SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;");
-            ps.executeQuery();
             if (con!=null){
                 //JOptionPane.showMessageDialog(null, "Si enlazó");//esto pueden volverlo comentario
             }
@@ -61,5 +58,7 @@ public class ConexionBD {
             JOptionPane.showMessageDialog(null, "Error al cerrar la conexion");
         }
     }
+    
+    
 }
 

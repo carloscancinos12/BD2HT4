@@ -60,29 +60,31 @@ public class Transaccion2 extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         rollback = new javax.swing.JButton();
+        IniciarTran = new javax.swing.JButton();
+        Editar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("DATOS");
+        jLabel1.setText("Transaccion 2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(408, 408, 408)
+                .addGap(362, 362, 362)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -149,6 +151,22 @@ public class Transaccion2 extends javax.swing.JFrame {
             }
         });
 
+        IniciarTran.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        IniciarTran.setText("INICIAR");
+        IniciarTran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IniciarTranActionPerformed(evt);
+            }
+        });
+
+        Editar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Editar.setText("EDITAR");
+        Editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -176,17 +194,20 @@ public class Transaccion2 extends javax.swing.JFrame {
                                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(boton1)
-                        .addGap(112, 112, 112)
+                        .addGap(18, 18, 18)
                         .addComponent(boton2)
-                        .addGap(75, 75, 75)
-                        .addComponent(commit)
+                        .addGap(18, 18, 18)
+                        .addComponent(Editar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rollback)
-                        .addGap(69, 69, 69))))
+                        .addComponent(IniciarTran)
+                        .addGap(18, 18, 18)
+                        .addComponent(commit)
+                        .addGap(18, 18, 18)
+                        .addComponent(rollback)))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,11 +233,15 @@ public class Transaccion2 extends javax.swing.JFrame {
                             .addComponent(jLabel4)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boton1)
-                    .addComponent(boton2)
-                    .addComponent(commit)
-                    .addComponent(rollback))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(boton1)
+                        .addComponent(boton2)
+                        .addComponent(Editar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rollback)
+                        .addComponent(commit)
+                        .addComponent(IniciarTran)))
                 .addGap(0, 32, Short.MAX_VALUE))
         );
 
@@ -274,6 +299,14 @@ public class Transaccion2 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_rollbackActionPerformed
 
+    private void IniciarTranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarTranActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IniciarTranActionPerformed
+
+    private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EditarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -311,6 +344,8 @@ public class Transaccion2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Editar;
+    private javax.swing.JButton IniciarTran;
     private javax.swing.JButton boton1;
     private javax.swing.JButton boton2;
     private javax.swing.JButton commit;

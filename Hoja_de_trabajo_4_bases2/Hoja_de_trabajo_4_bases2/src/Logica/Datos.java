@@ -2,6 +2,7 @@
 package Logica;
 
 import java.awt.HeadlessException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +15,12 @@ public class Datos {
     private DefaultTableModel DT;
     private ResultSet RS;
     private final ConexionBD CN;
+    private final Connection conect;
     
      public Datos() {
         PS = null;
         CN = new ConexionBD();
+        conect = CN.getConnection();
     }
      private DefaultTableModel setTitulos() {
         DT = new DefaultTableModel();
@@ -30,7 +33,7 @@ public class Datos {
      public int InsertDatos(String nombre, String nacionalidad, int telefono) throws Exception {
         int res = 0;
         try {
-            PS = CN.getConnection().prepareStatement(SQL_INSERT);
+            PS = conect.prepareStatement(SQL_INSERT);
             PS.setString(1, nombre);
             PS.setString(2, nacionalidad);
             PS.setInt(3, telefono);
@@ -52,7 +55,7 @@ public class Datos {
      public DefaultTableModel getDatos() {
         try {
             setTitulos();
-            PS= CN.getConnection().prepareStatement(SQL_SELECT);
+            PS= conect.prepareStatement(SQL_SELECT);
             RS = PS.executeQuery();
             Object[] fila = new Object[4];
             while(RS.next())
@@ -84,7 +87,7 @@ public class Datos {
         }
         try {
             setTitulos();
-            PS= CN.getConnection().prepareStatement(SQL);
+            PS= conect.prepareStatement(SQL);
             RS = PS.executeQuery();
             Object[] fila = new Object[4];
             while(RS.next())
@@ -107,31 +110,74 @@ public class Datos {
       
     public ResultSet Commit() {
         try {
-            PS= CN.getConnection().prepareStatement("commit;");
-            RS = PS.executeQuery();
-            CN.commit();
+            PS= conect.prepareStatement("commit;");
+            PS.execute();
+            //CN.commit();
         } catch (SQLException e) {
            System.out.println("Error al listar los datos..." +e.getMessage()); 
         } finally {
             PS=null;
             RS= null;
-            CN.close();
+            //CN.close();
         }
         return RS;
     }
     
     public ResultSet Rollback() {
         try {
-            PS= CN.getConnection().prepareStatement("rollback;");
-            RS = PS.executeQuery();
-            CN.rollback();
+            PS= conect.prepareStatement("rollback;");
+            PS.execute();
+            //CN.rollback();
         } catch (SQLException e) {
            System.out.println("Error al listar los datos..." +e.getMessage()); 
         } finally {
             PS=null;
             RS= null;
-            CN.close();
+            //CN.close();
         }
         return RS;
+    }
+    
+    public void Transaccion() {
+        try {
+            conect.setAutoCommit(false);
+            PS= CN.getConnection().prepareStatement("START TRANSACTION;");
+            PS.execute();
+            JOptionPane.showMessageDialog(null, "Transaccion iniciada");
+        } catch (SQLException e) {
+           System.out.println("Error al iniciar transaccion..." +e.getMessage()); 
+        } finally {
+            PS=null;
+            RS= null;
+            //CN.close();
+        }
+    }
+    
+    public void NivelTran(int nivel)
+    {
+        String tran = "REPEATABLE READ";
+        if (nivel == 1)
+            {
+                tran = "READ UNCOMMITTED";
+            }
+            else if (nivel == 2)
+            {
+                tran = "READ COMMITTED";
+            }
+            else if (nivel == 4)
+            {
+                tran = "SERIALIZABLE";
+            }
+        try {
+            PS = conect.prepareStatement("SET SESSION TRANSACTION ISOLATION LEVEL " + tran + ";");
+            RS = PS.executeQuery();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "pONTE VERGA");
+        } finally
+        {
+            PS=null;
+            RS= null;
+            //CN.close();
+        }
     }
 }

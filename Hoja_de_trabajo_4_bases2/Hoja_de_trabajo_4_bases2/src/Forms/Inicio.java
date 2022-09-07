@@ -1,12 +1,19 @@
 package Forms;
 
+import Logica.Datos;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Inicio extends javax.swing.JFrame {
 
   
     public Inicio() {
         initComponents();
+        CP = new Datos();
     }
 
+    private final Datos CP;
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -14,8 +21,10 @@ public class Inicio extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        boton1 = new javax.swing.JButton();
-        boton2 = new javax.swing.JButton();
+        NoComprometida = new javax.swing.JButton();
+        Comprometida = new javax.swing.JButton();
+        Serializable = new javax.swing.JButton();
+        Repetible = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -31,7 +40,7 @@ public class Inicio extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(178, 178, 178)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -41,19 +50,35 @@ public class Inicio extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        boton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        boton1.setText("TRANSACCION 1");
-        boton1.addActionListener(new java.awt.event.ActionListener() {
+        NoComprometida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        NoComprometida.setText("NO COMPROMETIDA");
+        NoComprometida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boton1ActionPerformed(evt);
+                NoComprometidaActionPerformed(evt);
             }
         });
 
-        boton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        boton2.setText("TRANSACCION 2");
-        boton2.addActionListener(new java.awt.event.ActionListener() {
+        Comprometida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Comprometida.setText("COMPROMETIDA");
+        Comprometida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boton2ActionPerformed(evt);
+                ComprometidaActionPerformed(evt);
+            }
+        });
+
+        Serializable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Serializable.setText("SERIALIZABLE");
+        Serializable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SerializableActionPerformed(evt);
+            }
+        });
+
+        Repetible.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Repetible.setText("REPETIBLE");
+        Repetible.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RepetibleActionPerformed(evt);
             }
         });
 
@@ -63,37 +88,65 @@ public class Inicio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(boton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(boton2)
-                .addGap(31, 31, 31))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Repetible)
+                        .addGap(98, 98, 98)
+                        .addComponent(Serializable))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(NoComprometida)
+                        .addGap(18, 18, 18)
+                        .addComponent(Comprometida)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boton1)
-                    .addComponent(boton2))
-                .addGap(0, 60, Short.MAX_VALUE))
+                    .addComponent(NoComprometida)
+                    .addComponent(Comprometida))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Repetible)
+                    .addComponent(Serializable))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void boton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton1ActionPerformed
+    private void NoComprometidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoComprometidaActionPerformed
         // TODO add your handling code here:
+        CP.NivelTran(1);
         new Transaccion1().setVisible(true);
-        dispose();
-    }//GEN-LAST:event_boton1ActionPerformed
-
-    private void boton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton2ActionPerformed
-        // TODO add your handling code here:
         new Transaccion2().setVisible(true);
         dispose();
-    }//GEN-LAST:event_boton2ActionPerformed
+    }//GEN-LAST:event_NoComprometidaActionPerformed
+
+    private void ComprometidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComprometidaActionPerformed
+        // TODO add your handling code here:
+        CP.NivelTran(2);
+        new Transaccion1().setVisible(true);
+        new Transaccion2().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_ComprometidaActionPerformed
+
+    private void SerializableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SerializableActionPerformed
+        CP.NivelTran(4);
+        new Transaccion1().setVisible(true);
+        new Transaccion2().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_SerializableActionPerformed
+
+    private void RepetibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RepetibleActionPerformed
+        CP.NivelTran(3);
+        new Transaccion1().setVisible(true);
+        new Transaccion2().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_RepetibleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,8 +184,10 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton boton1;
-    private javax.swing.JButton boton2;
+    private javax.swing.JButton Comprometida;
+    private javax.swing.JButton NoComprometida;
+    private javax.swing.JButton Repetible;
+    private javax.swing.JButton Serializable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
